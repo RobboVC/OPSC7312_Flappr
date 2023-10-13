@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_black"
+    tools:context=".Register">
+
+    <com.example.opsc7312_flappr.CircImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:src="@drawable/flappr_logo_colour" />
+
+    <TextView
+        android:id="@+id/tvRegister"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:text="@string/register"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="@string/below_register"
+        android:textSize="18sp"
+        android:textColor="@color/text_pink" />
+
+    <!-- Name field -->
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSubtitle"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="70dp"
+        android:text="@string/name"
+        android:textSize="22sp"
+        android:textColor="@color/text_orange" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/tvName"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/tb_grey"
+        android:inputType="textEmailAddress"
+        android:hint="@string/name_text"
+        android:textColorHint="@color/text_orange" />
+
+    <!-- Email field -->
+    <TextView
+        android:id="@+id/emailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvName"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="70dp"
+        android:text="@string/email"
+        android:textSize="22sp"
+        android:textColor="@color/text_orange" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/emailTitle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/tb_grey"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_text"
+        android:textColorHint="@color/text_orange" />
+
+    <!-- Password field -->
+    <TextView
+        android:id="@+id/passwordTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailEditText"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/password"
+        android:textSize="22sp"
+        android:textColor="@color/text_orange" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/passwordTitle"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/tb_grey"
+        android:inputType="textPassword"
+        android:hint="@string/password_text"
+        android:textColorHint="@color/text_orange" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/etPassword"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        app:cornerRadius="20dp"
+        android:text="@string/register_button"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+        android:stateListAnimator="@null"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        android:textSize="24dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        />
+
+
+</RelativeLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileFragment">
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChangePassword"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        app:cornerRadius="20dp"
+        android:text="go to change password"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
+        android:stateListAnimator="@null"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp"
+        android:textSize="24dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
