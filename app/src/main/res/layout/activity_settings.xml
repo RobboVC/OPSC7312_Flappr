@@ -7,6 +7,29 @@
     tools:context=".Settings"
     android:background="@color/background_black">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="24dp"
+        app:iconTint="@color/white"
+        app:backgroundTint="@color/black"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        app:iconPadding="0dp"
+        app:letterSpacing="0"
+        app:textAllCaps="false"
+        android:text="Back"
+        android:contentDescription="Back"
+        android:textColor="@color/white"
+        android:textSize="11dp"
+        android:layout_gravity="start"
+        android:elevation="0dp"
+        android:stateListAnimator="@null" />
+
+
     <com.example.opsc7312_flappr.CircImageView
         android:id="@+id/ivFlappr"
         android:layout_width="100dp"
@@ -45,7 +68,7 @@
     <!-- Custom Switch with Labels -->
     <LinearLayout
         android:id="@+id/switchContainer"
-        android:layout_width="match_parent"
+        android:layout_width="224dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUnitPreferenceTitle"
         android:layout_centerHorizontal="true"
@@ -53,7 +76,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
@@ -66,11 +89,11 @@
             android:id="@+id/switchUnits"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_weight="1"
-            android:outlineSpotShadowColor="@color/text_purple"
+            android:textAlignment="center"
             android:textColor="@color/text_orange"
             tools:ignore="TouchTargetSizeCheck" />
+
 
         <TextView
             android:layout_width="0dp"
@@ -78,6 +101,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="Metric"
+            android:layout_marginRight="24dp"
             android:textAlignment="viewStart"
             android:textColor="@color/text_orange"
             android:textSize="18sp" />
