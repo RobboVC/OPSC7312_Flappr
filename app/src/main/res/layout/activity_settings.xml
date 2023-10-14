@@ -1,24 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Settings"
+    android:background="@color/background_black">
+
+    <com.example.opsc7312_flappr.CircImageView
+        android:id="@+id/ivFlappr"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/flappr_logo_colour" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvSettingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivFlappr"
+        android:layout_marginTop="16dp"
+        android:text="Settings"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
 
     <TextView
-        android:id="@+id/txtSettings"
+        android:id="@+id/tvUnitPreferenceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvSettingsTitle"
+        android:layout_marginTop="30dp"
+        android:text="Unit Preference"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
+
+    <!-- Custom Switch with Labels -->
+    <LinearLayout
+        android:id="@+id/switchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_below="@id/tvUnitPreferenceTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="Imperial"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/text_orange"
+            android:textSize="18sp" />
+
+        <Switch
+            android:id="@+id/switchUnits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:outlineSpotShadowColor="@color/text_purple"
+            android:textColor="@color/text_orange"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="Metric"
+            android:textAlignment="viewStart"
+            android:textColor="@color/text_orange"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvMaxDistanceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/switchContainer"
+        android:layout_marginTop="30dp"
+        android:text="Max Distance"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
+
+    <!-- Maximum Distance Preference -->
+    <SeekBar
+        android:id="@+id/sbMaxDistance"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_below="@id/tvMaxDistanceTitle"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/tb_grey"
+        android:max="100"
+        android:progress="0"
+        android:progressBackgroundTint="@color/tb_grey"
+        android:progressTint="@color/text_orange"
+        android:splitTrack="false"
+        android:thumbTint="@color/text_orange" />
+
+    <LinearLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sbMaxDistance"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etMaxDistance"
+            android:layout_width="80dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="48dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/tb_grey"
+            android:hint="0"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColorHint="@color/text_orange"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/tvUnits"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Kilometres"
+            android:textColor="@color/text_orange"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveSettings"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/bottomContainer"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        app:cornerRadius="20dp"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+        android:stateListAnimator="@null"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        android:textSize="24dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        />
+</RelativeLayout>
+
