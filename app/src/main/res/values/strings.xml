@@ -24,4 +24,5 @@
     <string name="menu_home">Home</string>
     <string name="menu_sightings">View My Sightings</string>
     <string name="menu_profile">View My Profile</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoic3QxMDA4MTk2NiIsImEiOiJjbG5xM2Q1bWowaXFpMmluejV5ZGV1c3d4In0.vi7bgR6w9pzhBOkGBsWebQ</string>
 </resources>
