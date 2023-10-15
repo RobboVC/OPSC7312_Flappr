@@ -8,10 +8,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.opsc7312_flappr.databinding.FragmentHomeBinding
-
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+
+
+    private lateinit var mapView: MapView
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,8 +29,9 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
+        mapView = binding.mapView
+        mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
     }
 
     override fun onDestroyView() {

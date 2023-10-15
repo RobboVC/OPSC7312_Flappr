@@ -24,6 +24,7 @@ class Register : AppCompatActivity() {
             val intent = Intent(this, Login::class.java)
             LoginWorker.username = username.toString()
             LoginWorker.password = password.toString()
+            LoginWorker.FirstName = name.toString()
 
             startActivity(intent)
         }

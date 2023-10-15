@@ -19,8 +19,6 @@ class Login : AppCompatActivity() {
         val i = getIntent()
         val username = LoginWorker.username
         val password = LoginWorker.password
-        val AdminUsername = "Admin"
-        val AdminPassword = "Admin"
         val name = i.getStringExtra("name")
         val btnGoToReg = findViewById<Button>(R.id.btnGoToRegister)
 
@@ -37,9 +35,11 @@ class Login : AppCompatActivity() {
             }
             else if(givenUsername.toString().equals("Admin") && givenPassword.toString().equals("Password")) {
                 redirectToNavigationDrawer()
+                LoginWorker.FirstName = "Admin"
+
             }
             else{
-                Toast.makeText(this, "There is no account with this username and password combination" + username + password, Toast.LENGTH_LONG)
+                Toast.makeText(this, "There is no account with this username and password combination", Toast.LENGTH_LONG)
                     .show()
             }
         }
