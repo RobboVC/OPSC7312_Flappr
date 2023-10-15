@@ -24,9 +24,9 @@ class SightingsFragment : Fragment() {
     ): View {
 
         _binding = FragmentSightingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val view = binding.root
 
-        return root
+        return view
     }
 
     override fun onDestroyView() {

@@ -29,7 +29,7 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.appBarHomePage.toolbar)
+        //setSupportActionBar(binding.appBarHomePage.toolbar)
         binding.appBarHomePage.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
