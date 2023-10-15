@@ -20,6 +20,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="view_profile_text">View profile</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_sightings">View My Sightings</string>

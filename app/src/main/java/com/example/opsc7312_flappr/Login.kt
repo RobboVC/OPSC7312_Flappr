@@ -29,12 +29,12 @@ class Login : AppCompatActivity() {
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-        btnLogin.setOnClickListener(){
+        btnLogin.setOnClickListener(){view ->
             if(givenUsername.toString().equals(username.toString()) && givenPassword.toString().equals(password.toString())) {
-                redirectToNavigationDrawer()
+                redirectToNavigationDrawer(view)
             }
             else if(givenUsername.toString().equals("Admin") && givenPassword.toString().equals("Password")) {
-                redirectToNavigationDrawer()
+                redirectToNavigationDrawer(view)
                 LoginWorker.FirstName = "Admin"
 
             }
@@ -45,7 +45,7 @@ class Login : AppCompatActivity() {
         }
 
     }
-    fun redirectToNavigationDrawer() {
+    fun redirectToNavigationDrawer(view: View) {
         val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
     }
