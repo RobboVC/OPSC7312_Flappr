@@ -78,7 +78,8 @@ class HomeFragment : Fragment() {
         mapView = MapView(requireContext())
         view.addView(mapView)
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
-        locationPermissionHelper = LocationPermissionHelper(WeakReference(Activity()))
+        locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
+
         locationPermissionHelper.checkPermissions { onMapReady() }
         return view
     }
