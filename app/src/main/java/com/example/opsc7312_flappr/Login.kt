@@ -1,5 +1,6 @@
 package com.example.opsc7312_flappr
 
+import LoginWorker
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,8 +17,8 @@ class Login : AppCompatActivity() {
         var givenUsername = findViewById<TextView>(R.id.emailEditText).text
         var givenPassword = findViewById<TextView>(R.id.etPassword).text
         val i = getIntent()
-        val username = i.getStringExtra("username")
-        val password = i.getStringExtra("password")
+        val username = LoginWorker.username
+        val password = LoginWorker.password
         val AdminUsername = "Admin"
         val AdminPassword = "Admin"
         val name = i.getStringExtra("name")

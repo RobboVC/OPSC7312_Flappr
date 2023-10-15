@@ -1,5 +1,6 @@
 package com.example.opsc7312_flappr
 
+import LoginWorker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,9 +22,9 @@ class Register : AppCompatActivity() {
 
         btnLogin.setOnClickListener(){
             val intent = Intent(this, Login::class.java)
-            intent.putExtra("name", name)
-            intent.putExtra("username", username)
-            intent.putExtra("password", password)
+            LoginWorker.username = username.toString()
+            LoginWorker.password = password.toString()
+
             startActivity(intent)
         }
 
