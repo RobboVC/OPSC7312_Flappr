@@ -113,10 +113,17 @@
         android:onClick="redirectToNavigationDrawer"
         />
 
-    <Button
-        android:id="@+id/btnGoToRegister"
+
+    <TextView
+        android:id="@+id/tvRedirectToRegister"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register" />
+        android:layout_height="48dp"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginStart="270dp"
+        android:layout_marginTop="8dp"
+        android:text="Register"
+        android:textSize="18sp"
+        android:textColor="#FDE4CF"
+        android:clickable="true"/>
 
 </RelativeLayout>

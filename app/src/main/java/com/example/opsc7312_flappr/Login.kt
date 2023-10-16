@@ -2,6 +2,7 @@ package com.example.opsc7312_flappr
 
 import LoginWorker
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -20,11 +21,12 @@ class Login : AppCompatActivity() {
         val username = LoginWorker.username
         val password = LoginWorker.password
         val name = i.getStringExtra("name")
-        val btnGoToReg = findViewById<Button>(R.id.btnGoToRegister)
 
-        btnGoToReg.setOnClickListener(){
-            val intent = Intent(this, Register::class.java)
-            startActivity(intent)
+
+        val tvRedirectToRegister = findViewById<TextView>(R.id.tvRedirectToRegister)
+        tvRedirectToRegister.paintFlags = tvRedirectToRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        tvRedirectToRegister.setOnClickListener {
+            navigateToRegister()
         }
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
@@ -45,6 +47,12 @@ class Login : AppCompatActivity() {
         }
 
     }
+
+    fun navigateToRegister() {
+        val intent = Intent(this, Register::class.java)
+        startActivity(intent)
+    }
+
     fun redirectToNavigationDrawer(view: View) {
         val intent = Intent(this, HomePage::class.java)
         startActivity(intent)
