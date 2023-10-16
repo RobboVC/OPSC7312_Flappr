@@ -33,6 +33,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import androidx.annotation.DrawableRes
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.annotations
@@ -83,20 +84,16 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        mapView = MapView(requireContext())
-        view.addView(mapView)
+        mapView = binding.mapView
         mapView?.getMapboxMap()?.loadStyleUri(
-            Style.MAPBOX_STREETS,
-            object : Style.OnStyleLoaded {
-                override fun onStyleLoaded(style: Style) {
-                    addAnnotationToMap(37.418901, -122.078054)
-                }
-            }
-        )
+            Style.MAPBOX_STREETS
+        ) { addAnnotationToMap(37.419974, -122.078053) }
+
         locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
 
         locationPermissionHelper.checkPermissions { onMapReady() }
+
+
         return view
     }
 
@@ -171,26 +168,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun addAnnotationToMap(longitude: Double, latitude: Double) {
-// Create an instance of the Annotation API and get the PointAnnotationManager.
-        bitmapFromDrawableRes(
-            requireContext(),
-            R.drawable.flappr_logo_colour
-        )?.let {
-            val annotationApi = mapView?.annotations
-            val pointAnnotationManager = annotationApi?.createPointAnnotationManager(mapView!!)
-// Set options for the resulting symbol layer.
-            val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-// Define a geographic coordinate.
-                .withPoint(Point.fromLngLat(longitude, latitude))
-// Specify the bitmap you assigned to the point annotation
-// The bitmap will be added to map style automatically.
-                .withIconImage(it)
-// Add the resulting pointAnnotation to the map.
-            pointAnnotationManager?.create(pointAnnotationOptions)
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.flappr_logo_colour)
+        if (bitmap != null) {
+            val annotationApi = mapView.annotations
+            if (annotationApi != null) {
+                val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
+                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                    .withPoint(Point.fromLngLat(longitude, latitude))
+                    .withIconImage(bitmap.toString())
+                pointAnnotationManager.create(pointAnnotationOptions)
+                Log.d("Debug", "Annotation created successfully")
+            } else {
+                Log.e("Error", "Annotations API is null")
+            }
+        } else {
+            Log.e("Error", "Bitmap is null")
         }
     }
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
-        convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
+        convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId)).also {
+
+        }
 
     private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
         if (sourceDrawable == null) {
