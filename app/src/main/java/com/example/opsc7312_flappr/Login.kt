@@ -20,8 +20,6 @@ class Login : AppCompatActivity() {
         val i = getIntent()
         val username = LoginWorker.username
         val password = LoginWorker.password
-        val name = i.getStringExtra("name")
-
 
         val tvRedirectToRegister = findViewById<TextView>(R.id.tvRedirectToRegister)
         tvRedirectToRegister.paintFlags = tvRedirectToRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG

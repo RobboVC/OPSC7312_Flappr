@@ -57,6 +57,7 @@ class Settings : AppCompatActivity() {
         findViewById<View>(R.id.btnSaveSettings).setOnClickListener { v: View? ->
             // Save user preferences to variables or perform desired actions
             saveUserPreferences(isMetric, maxDistance)
+            EBirdApiServiceKotlin.dist = maxDistance
 
         }
     }
