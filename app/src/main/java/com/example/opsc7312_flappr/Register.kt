@@ -2,6 +2,7 @@ package com.example.opsc7312_flappr
 
 import LoginWorker
 import android.content.Intent
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -18,7 +19,9 @@ class Register : AppCompatActivity() {
         var username = txtUsername.text
         var password = txtPassword.text
         var name = txtName.text
-        val btnLogin = findViewById<TextView>(R.id.tvSubtitle)
+        val btnLogin = findViewById<TextView>(R.id.tvSubtitleClick)
+
+        btnLogin.paintFlags = btnLogin.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         btnLogin.setOnClickListener(){
             val intent = Intent(this, Login::class.java)
