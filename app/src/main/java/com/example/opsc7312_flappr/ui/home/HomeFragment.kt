@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.opsc7312_flappr.databinding.FragmentHomeBinding
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
-
-
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -85,15 +83,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         mapView = binding.mapView
-        mapView?.getMapboxMap()?.loadStyleUri(
-            Style.MAPBOX_STREETS
-        ) { addAnnotationToMap(37.419974, -122.078053) }
 
         locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
 
         locationPermissionHelper.checkPermissions { onMapReady() }
 
-
+        //mapView.invalidate()
+        /*
+        mapView?.getMapboxMap()?.loadStyleUri(
+            Style.MAPBOX_STREETS
+        ) { addAnnotationToMap(37.419974, -122.078053) }
+        */
         return view
     }
 
@@ -107,6 +107,8 @@ class HomeFragment : Fragment() {
             Style.MAPBOX_STREETS
         ) {
             initLocationComponent()
+            addAnnotationToMap(18.0,-33.0)
+            addAnnotationToMap(19.0, -34.0)
             setupGesturesListener()
         }
     }
@@ -168,14 +170,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun addAnnotationToMap(longitude: Double, latitude: Double) {
-        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.flappr_logo_colour)
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
         if (bitmap != null) {
             val annotationApi = mapView.annotations
             if (annotationApi != null) {
                 val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
                 val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
                     .withPoint(Point.fromLngLat(longitude, latitude))
-                    .withIconImage(bitmap.toString())
+                    .withIconImage(bitmap)
                 pointAnnotationManager.create(pointAnnotationOptions)
                 Log.d("Debug", "Annotation created successfully")
             } else {

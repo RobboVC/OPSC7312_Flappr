@@ -45,6 +45,7 @@ class Settings : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 maxDistance = progress
                 etMaxDistance.setText(maxDistance.toString())
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
