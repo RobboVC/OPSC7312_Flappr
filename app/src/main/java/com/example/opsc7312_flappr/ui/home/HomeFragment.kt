@@ -1,6 +1,8 @@
 package com.example.opsc7312_flappr.ui.home
 
+import EBirdApiService
 import LocationPermissionHelper
+import Observations
 import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -33,10 +35,16 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.annotation.DrawableRes
+import com.example.opsc7312_flappr.BuildConfig
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 
@@ -44,6 +52,21 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
+    //EBIRD GLOBAL VARIABLES - START
+    //API KEY
+    private val apiKey = "ql19oi7mpdd1"
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.ebird.org")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val eBirdApi = retrofit.create(EBirdApiService::class.java)
+
+    private val latitude = -33.0
+    private val longitude = 18.0
+
+    //EBIRD CLOBAL VARIABLES - END
 
     private lateinit var locationPermissionHelper: LocationPermissionHelper
 
@@ -107,10 +130,40 @@ class HomeFragment : Fragment() {
             Style.MAPBOX_STREETS
         ) {
             initLocationComponent()
-            addAnnotationToMap(18.0,-33.0)
-            addAnnotationToMap(19.0, -34.0)
+            //addAnnotationToMap(18.0,-33.0, R.drawable.pin_red, "beans")
+            //addAnnotationToMap(19.0, -34.0, R.drawable.pin_red, "beans 2")
             setupGesturesListener()
+
+            // Make the eBird API call
+            GlobalScope.launch(Dispatchers.Main) {
+                try {
+                    val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey=apiKey)
+                    handleObservations(observations)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
+    }
+
+    private fun handleObservations(observations: List<Observations>) {
+        Log.d("Debug", "Received observations: $observations")
+
+
+            // Iterate through the list of observations and add annotations
+            for (observation in observations) {
+                // Extract relevant information from the observation
+                val species = observation.comName
+                val obsLongitude = observation.lng
+                val obsLatitude = observation.lat
+
+                Log.d("Debug", "Coordinates - Latitude: $latitude, Longitude: $longitude")
+                Log.d("Debug", "Observation - Latitude: ${observation.lat}, Longitude: ${observation.lng}")
+
+                // Add Mapbox annotation for each observation with a red pin icon
+                addAnnotationToMap(obsLongitude, obsLatitude, R.drawable.pin_red, species)
+            }
+
     }
 
     private fun setupGesturesListener() {
@@ -169,6 +222,7 @@ class HomeFragment : Fragment() {
         locationPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    /*
     private fun addAnnotationToMap(longitude: Double, latitude: Double) {
         val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
         if (bitmap != null) {
@@ -187,6 +241,29 @@ class HomeFragment : Fragment() {
             Log.e("Error", "Bitmap is null")
         }
     }
+     */
+
+    private fun addAnnotationToMap(longitude: Double, latitude: Double, iconResId: Int, species: String) {
+        val bitmap = bitmapFromDrawableRes(requireContext(), iconResId)
+        if (bitmap != null) {
+            val annotationApi = mapView.annotations
+            if (annotationApi != null) {
+                val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
+                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                    .withPoint(Point.fromLngLat(longitude, latitude))
+                    .withIconImage(bitmap)
+                    .withIconSize(1.0) // Adjust the size as needed
+                    .withTextField(species) // Display species as text
+                pointAnnotationManager.create(pointAnnotationOptions)
+                Log.d("Debug", "Annotation created successfully")
+            } else {
+                Log.e("Error", "Annotations API is null")
+            }
+        } else {
+            Log.e("Error", "Bitmap is null")
+        }
+    }
+
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId)).also {
 
@@ -212,6 +289,5 @@ class HomeFragment : Fragment() {
             bitmap
         }
     }
-
 
 }

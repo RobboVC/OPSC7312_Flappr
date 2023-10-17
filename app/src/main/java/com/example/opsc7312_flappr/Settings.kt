@@ -1,5 +1,6 @@
 package com.example.opsc7312_flappr
 
+import EBirdApiService
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -56,6 +57,7 @@ class Settings : AppCompatActivity() {
         findViewById<View>(R.id.btnSaveSettings).setOnClickListener { v: View? ->
             // Save user preferences to variables or perform desired actions
             saveUserPreferences(isMetric, maxDistance)
+
         }
     }
 
