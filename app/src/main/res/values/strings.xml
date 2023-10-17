@@ -6,7 +6,8 @@
     <string name="password">Password</string>
     <string name="login_button">log in</string>
     <string name="register">Create New Account</string>
-    <string name="below_register">Already Registered? Log in here.</string>
+    <string name="non_clickable_text_r">Already Registered?</string>
+    <string name="clickable_text_r">Log in here.</string>
     <string name="register_button">sign in</string>
     <string name="name">Name</string>
     <string name="name_text">   Adam van Staden</string>
