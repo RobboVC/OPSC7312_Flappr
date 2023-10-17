@@ -30,12 +30,18 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import java.lang.ref.WeakReference
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
+import android.location.Location
 import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.example.opsc7312_flappr.BuildConfig
+
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -45,7 +51,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import android.Manifest
+import androidx.core.app.ActivityCompat
 
 
 class HomeFragment : Fragment() {
@@ -63,12 +70,14 @@ class HomeFragment : Fragment() {
 
     private val eBirdApi = retrofit.create(EBirdApiService::class.java)
 
-    private val latitude = -33.0
-    private val longitude = 18.0
+    private var latitude = -33.0
+    private var longitude = 18.0
 
-    //EBIRD CLOBAL VARIABLES - END
+    //EBIRD GLOBAL VARIABLES - END
 
     private lateinit var locationPermissionHelper: LocationPermissionHelper
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
@@ -107,9 +116,24 @@ class HomeFragment : Fragment() {
         val view = binding.root
         mapView = binding.mapView
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        requestLocation()
+
         locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
 
         locationPermissionHelper.checkPermissions { onMapReady() }
+
+
+
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        } else {
+            // Permission is granted, get current location
+            requestLocation()
+        }
 
         //mapView.invalidate()
         /*
@@ -119,6 +143,25 @@ class HomeFragment : Fragment() {
         */
         return view
     }
+
+    companion object {
+        private const val REQUEST_LOCATION_PERMISSION = 1
+    }
+
+    private fun requestLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    // Set latitude and longitude
+                    latitude = location.latitude
+                    longitude = location.longitude
+
+                    // Now you can use latitude and longitude as needed
+                }
+            }
+    }
+
+
 
     private fun onMapReady() {
         mapView.getMapboxMap().setCamera(
@@ -219,7 +262,19 @@ class HomeFragment : Fragment() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        locationPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, get location
+                requestLocation()
+            } else {
+                // Handle case where user denied location permission
+                // You may want to show a message to the user or take other action
+            }
+        } else {
+            // Pass the result to your existing locationPermissionHelper
+            locationPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     /*
