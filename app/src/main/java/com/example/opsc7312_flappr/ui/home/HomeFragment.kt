@@ -1,6 +1,7 @@
 package com.example.opsc7312_flappr.ui.home
 
 import EBirdApiService
+import EBirdApiServiceKotlin
 import LocationPermissionHelper
 import Observations
 import android.app.Activity
@@ -39,7 +40,6 @@ import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.example.opsc7312_flappr.BuildConfig
-
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
@@ -52,7 +52,16 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
 import androidx.core.app.ActivityCompat
+import com.example.opsc7312_flappr.Login
+import com.mapbox.maps.extension.style.layers.generated.lineLayer
+import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
+import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
+import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.style
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 
 
 class HomeFragment : Fragment() {
@@ -126,14 +135,20 @@ class HomeFragment : Fragment() {
 
 
 
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION
+            )
         } else {
             // Permission is granted, get current location
             requestLocation()
         }
+
 
         //mapView.invalidate()
         /*
@@ -146,6 +161,8 @@ class HomeFragment : Fragment() {
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
+        private const val GEOJSON_SOURCE_ID = "line"
+        private const val ZOOM = 14.0
     }
 
     private fun requestLocation() {
@@ -162,7 +179,6 @@ class HomeFragment : Fragment() {
     }
 
 
-
     private fun onMapReady() {
         mapView.getMapboxMap().setCamera(
             CameraOptions.Builder()
@@ -173,17 +189,34 @@ class HomeFragment : Fragment() {
             Style.MAPBOX_STREETS
         ) {
             initLocationComponent()
-            //addAnnotationToMap(18.0,-33.0, R.drawable.pin_red, "beans")
-            //addAnnotationToMap(19.0, -34.0, R.drawable.pin_red, "beans 2")
             setupGesturesListener()
 
-            // Make the eBird API call
             GlobalScope.launch(Dispatchers.Main) {
                 try {
-                    val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey=apiKey)
+                    val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey = apiKey)
                     handleObservations(observations)
                 } catch (e: Exception) {
                     e.printStackTrace()
+                }
+            }
+
+            val annotationApi = mapView.annotations
+            val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
+
+            pointAnnotationManager.addClickListener { annotation ->
+                if (annotation is PointAnnotation) {
+                    val latitude = annotation.point.latitude()
+                    val longitude = annotation.point.longitude()
+
+                    Log.d("Debug", "Marker Clicked - Latitude: $latitude, Longitude: $longitude")
+
+                    // Display a toast for debugging
+                    Toast.makeText(requireContext(), "Marker Clicked - Lat: $latitude, Long: $longitude", Toast.LENGTH_SHORT).show()
+
+                    displayMarkerInfo(latitude, longitude)
+                    true // Return true to indicate that the click event has been handled
+                } else {
+                    false // Return false if it's not a PointAnnotation
                 }
             }
         }
@@ -193,19 +226,22 @@ class HomeFragment : Fragment() {
         Log.d("Debug", "Received observations: $observations")
 
 
-            // Iterate through the list of observations and add annotations
-            for (observation in observations) {
-                // Extract relevant information from the observation
-                val species = observation.comName
-                val obsLongitude = observation.lng
-                val obsLatitude = observation.lat
+        // Iterate through the list of observations and add annotations
+        for (observation in observations) {
+            // Extract relevant information from the observation
+            val species = observation.comName
+            val obsLongitude = observation.lng
+            val obsLatitude = observation.lat
 
-                Log.d("Debug", "Coordinates - Latitude: $latitude, Longitude: $longitude")
-                Log.d("Debug", "Observation - Latitude: ${observation.lat}, Longitude: ${observation.lng}")
+            Log.d("Debug", "Coordinates - Latitude: $latitude, Longitude: $longitude")
+            Log.d(
+                "Debug",
+                "Observation - Latitude: ${observation.lat}, Longitude: ${observation.lng}"
+            )
 
-                // Add Mapbox annotation for each observation with a red pin icon
-                addAnnotationToMap(obsLongitude, obsLatitude, R.drawable.pin_red, species)
-            }
+            // Add Mapbox annotation for each observation with a red pin icon
+            addAnnotationToMap(obsLongitude, obsLatitude, R.drawable.pin_red, species)
+        }
 
     }
 
@@ -237,8 +273,12 @@ class HomeFragment : Fragment() {
                 }.toJson()
             )
         }
-        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        locationComponentPlugin.addOnIndicatorPositionChangedListener(
+            onIndicatorPositionChangedListener
+        )
+        locationComponentPlugin.addOnIndicatorBearingChangedListener(
+            onIndicatorBearingChangedListener
+        )
     }
 
     private fun onCameraTrackingDismissed() {
@@ -273,7 +313,11 @@ class HomeFragment : Fragment() {
             }
         } else {
             // Pass the result to your existing locationPermissionHelper
-            locationPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            locationPermissionHelper.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+            )
         }
     }
 
@@ -298,7 +342,12 @@ class HomeFragment : Fragment() {
     }
      */
 
-    private fun addAnnotationToMap(longitude: Double, latitude: Double, iconResId: Int, species: String) {
+    private fun addAnnotationToMap(
+        longitude: Double,
+        latitude: Double,
+        iconResId: Int,
+        species: String
+    ) {
         val bitmap = bitmapFromDrawableRes(requireContext(), iconResId)
         if (bitmap != null) {
             val annotationApi = mapView.annotations
@@ -308,8 +357,17 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0) // Adjust the size as needed
-                    .withTextField(species) // Display species as text
+                    .withTextField(species)
+                // Display species as text
                 pointAnnotationManager.create(pointAnnotationOptions)
+                pointAnnotationManager?.addClickListener {
+                    Toast.makeText(requireContext(), "Latitude$latitude" + "Longitude$longitude", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), Navigation::class.java)
+                    EBirdApiServiceKotlin.long = longitude
+                    EBirdApiServiceKotlin.lat = latitude
+                    startActivity(intent)
+                    false
+                }
                 Log.d("Debug", "Annotation created successfully")
             } else {
                 Log.e("Error", "Annotations API is null")
@@ -318,6 +376,7 @@ class HomeFragment : Fragment() {
             Log.e("Error", "Bitmap is null")
         }
     }
+
 
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId)).also {
@@ -344,5 +403,16 @@ class HomeFragment : Fragment() {
             bitmap
         }
     }
+
+    private fun displayMarkerInfo(latitude: Double, longitude: Double) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder
+            .setTitle("Marker Information")
+            .setMessage("Latitude: $latitude\nLongitude: $longitude")
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+
 
 }
