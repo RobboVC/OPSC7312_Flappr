@@ -1,8 +1,11 @@
 package com.example.opsc7312_flappr
 
 import EBirdApiService
+import EBirdApiServiceKotlin
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.SeekBar
@@ -18,6 +21,7 @@ class Settings : AppCompatActivity() {
     private var maxDistance = 0
 
     private lateinit var btnBack: MaterialButton
+    private lateinit var etMaxDistance: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +42,37 @@ class Settings : AppCompatActivity() {
         }
 
         // Set listeners for the switch and seekbar
+        switchUnits.isChecked = EBirdApiServiceKotlin.getUnits()
+        updateMaxDistanceLabel(EBirdApiServiceKotlin.getUnits())
+        maxDistance = EBirdApiServiceKotlin.getMaxDistance()
+        etMaxDistance.setText(maxDistance.toString())
+
+        // Set listeners for the switch and seekbar
         switchUnits.setOnCheckedChangeListener { buttonView, isChecked ->
             isMetric = isChecked
             updateMaxDistanceLabel(isMetric)
         }
+
+        etMaxDistance.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                if (text.isNotEmpty()) {
+                    val value = text.toIntOrNull()
+                    if (value != null && value in 1..50) {
+                        maxDistance = value
+                        sbMaxDistance.progress = maxDistance
+                        etMaxDistance.error = null
+                    } else {
+                        etMaxDistance.error = "Enter a value from 1 to 50"
+                    }
+                }
+            }
+        })
+
         sbMaxDistance.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 maxDistance = progress
@@ -62,6 +93,18 @@ class Settings : AppCompatActivity() {
         }
     }
 
+
+
+    // Set listener for the Save button
+
+
+    private fun saveUserPreferences(isMetric: Boolean, maxDistance: Int) {
+    EBirdApiServiceKotlin.setUnits(isMetric)
+    EBirdApiServiceKotlin.setMaxDistance(maxDistance)
+    }
+
+
+
     private fun updateMaxDistanceLabel(isMetric: Boolean) {
         val tvUnits = findViewById<TextView>(R.id.tvUnits)
         if (isMetric) {
@@ -71,7 +114,4 @@ class Settings : AppCompatActivity() {
         }
     }
 
-    private fun saveUserPreferences(isMetric: Boolean, maxDistance: Int) {
-        // Implement saving user preferences to variables or storage here
-    }
 }

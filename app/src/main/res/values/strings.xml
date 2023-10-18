@@ -4,15 +4,15 @@
     <string name="below_login">Sign in to continue.</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login_button">log in</string>
+    <string name="login_button">Log in</string>
     <string name="register">Create New Account</string>
     <string name="non_clickable_text_r">Already Registered?</string>
     <string name="clickable_text_r">Log in here.</string>
-    <string name="register_button">sign in</string>
+    <string name="register_button">Sign in</string>
     <string name="name">Name</string>
-    <string name="name_text">   Adam van Staden</string>
-    <string name="email_text">   hello@reallygreatsite.com</string>
-    <string name="password_text">   ************</string>
+    <string name="name_text">Adam van Staden</string>
+    <string name="email_text">hello@reallygreatsite.com</string>
+    <string name="password_text">************</string>
     <string name="title_activity_home_page">HomePage</string>
     <string name="title_home">Home Page</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -32,4 +32,13 @@
     <string name="menu_sightings">View My Sightings</string>
     <string name="menu_profile">View My Profile</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoic3QxMDA4MTk2NiIsImEiOiJjbG5xM2Q1bWowaXFpMmluejV5ZGV1c3d4In0.vi7bgR6w9pzhBOkGBsWebQ</string>
+
+    <string name="default_max_dis">1</string>
+    <string name="back">Back</string>
+    <string name="unit_pref">Unit Preference</string>
+    <string name="imperial">Imperial</string>
+    <string name="metric">Metric</string>
+    <string name="max_dis">Max Distance</string>
+    <string name="km">Kilometres</string>
+    <string name="miles">Miles</string>
 </resources>

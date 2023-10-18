@@ -12,6 +12,25 @@ class EBirdApiServiceKotlin {
             val newItem = UserObservation(longitude, latitude, name)
             listOfUserObservations.add(newItem)
         }
+
+        private var isMetric = true
+        private var maxDistance = 1
+
+        fun setUnits(metric: Boolean) {
+            isMetric = metric
+        }
+
+        fun getUnits(): Boolean {
+            return isMetric
+        }
+
+        fun setMaxDistance(distance: Int) {
+            maxDistance = distance
+        }
+
+        fun getMaxDistance(): Int {
+            return maxDistance
+        }
     }
 
 }

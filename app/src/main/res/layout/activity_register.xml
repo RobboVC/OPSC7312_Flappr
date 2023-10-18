@@ -12,7 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/flappr_logo_colour" />
 
     <TextView
@@ -80,6 +80,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textEmailAddress"
         android:hint="@string/name_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <!-- Email field -->
@@ -106,6 +107,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textEmailAddress"
         android:hint="@string/email_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <!-- Password field -->
@@ -132,6 +134,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textPassword"
         android:hint="@string/password_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <com.google.android.material.button.MaterialButton

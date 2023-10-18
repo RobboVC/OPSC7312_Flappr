@@ -20,8 +20,8 @@
         app:strokeWidth="2dp"
         app:iconPadding="0dp"
         app:textAllCaps="false"
-        android:text="Back"
-        android:contentDescription="Back"
+        android:text="@string/back"
+        android:contentDescription="@string/back"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:layout_gravity="start"
@@ -34,7 +34,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/flappr_logo_colour" />
 
     <!-- Title -->
@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/ivFlappr"
         android:layout_marginTop="16dp"
-        android:text="Settings"
+        android:text="@string/action_settings"
         android:textSize="38sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -67,7 +67,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/tvSettingsTitle"
         android:layout_marginTop="60dp"
-        android:text="Unit Preference"
+        android:text="@string/unit_pref"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="Imperial"
+            android:text="@string/imperial"
             android:textAlignment="viewEnd"
             android:textColor="@color/text_orange"
             android:textStyle="bold"
@@ -99,7 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="center"
+            android:layout_marginRight="12dp"
             android:textColor="@color/text_orange"
             android:background="@color/black"
             android:track="@drawable/switch_rounded_corners"
@@ -111,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
-            android:text="Metric"
-            android:layout_marginRight="24dp"
+            android:layout_marginEnd="14dp"
+            android:text="@string/metric"
             android:textAlignment="viewStart"
             android:textStyle="bold"
             android:textColor="@color/text_orange"
@@ -126,7 +126,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/switchContainer"
         android:layout_marginTop="50dp"
-        android:text="Max Distance"
+        android:text="@string/max_dis"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAlignment="center"
@@ -142,48 +142,46 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="70dp"
         android:backgroundTint="@color/tb_grey"
-        android:max="100"
+        android:max="50"
+        android:min="1"
         android:progress="0"
         android:progressBackgroundTint="@color/tb_grey"
         android:progressTint="@color/text_orange"
         android:splitTrack="false"
         android:thumbTint="@color/text_orange" />
 
-    <LinearLayout
-        android:id="@+id/bottomContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+    <EditText
+        android:id="@+id/etMaxDistance"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
         android:layout_below="@id/sbMaxDistance"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/tb_grey"
+        android:inputType="number"
+        android:text="@string/default_max_dis"
+        android:textAlignment="center"
+        android:textColor="@color/text_orange"
+        tools:ignore="TouchTargetSizeCheck" />
 
-        <EditText
-            android:id="@+id/etMaxDistance"
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="48dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/tb_grey"
-            android:hint="0"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:textColorHint="@color/text_orange"
-            tools:ignore="TouchTargetSizeCheck" />
+    <TextView
+        android:id="@+id/tvUnits"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:layout_below="@id/etMaxDistance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/miles"
+        android:textStyle="bold"
+        android:textColor="@color/text_orange"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvUnits"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Kilometres"
-            android:textStyle="bold"
-            android:textColor="@color/text_orange"
-            android:textSize="18sp" />
-    </LinearLayout>
 
     <!-- Save Button -->
     <com.google.android.material.button.MaterialButton
@@ -191,7 +189,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@id/bottomContainer"
+        android:layout_below="@id/tvUnits"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="70dp"
         android:layout_marginStart="70dp"
