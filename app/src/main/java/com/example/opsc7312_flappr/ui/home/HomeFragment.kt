@@ -1,6 +1,8 @@
 package com.example.opsc7312_flappr.ui.home
 
 import EBirdApiService
+import okhttp3.ResponseBody
+import Hotspots
 import LocationPermissionHelper
 import Observations
 import android.app.Activity
@@ -36,6 +38,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.annotation.DrawableRes
 import com.example.opsc7312_flappr.BuildConfig
+import com.google.gson.GsonBuilder
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -43,6 +46,7 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -56,6 +60,8 @@ class HomeFragment : Fragment() {
     //API KEY
     private val apiKey = "ql19oi7mpdd1"
 
+    private val eBirdApiService = RestClient.create()
+/*
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.ebird.org")
         .addConverterFactory(GsonConverterFactory.create())
@@ -63,8 +69,10 @@ class HomeFragment : Fragment() {
 
     private val eBirdApi = retrofit.create(EBirdApiService::class.java)
 
-    private val latitude = -33.0
-    private val longitude = 18.0
+ */
+
+    private val latitude = -33.9353
+    private val longitude = 18.4083
 
     //EBIRD CLOBAL VARIABLES - END
 
@@ -136,16 +144,125 @@ class HomeFragment : Fragment() {
 
             // Make the eBird API call
             GlobalScope.launch(Dispatchers.Main) {
+                /*
                 try {
                     val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey=apiKey)
                     handleObservations(observations)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+
+                 */
+                /*
+                    try {
+                        val response = eBirdApi.getNearbyHotspots(latitude, longitude)
+                        handleHotspots(response)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                 */
+                GlobalScope.launch(Dispatchers.Main) {
+                    try {
+                        getHotspotsCsv(latitude, longitude, distance = 50)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
+/*
+    private fun getHotspots(latitude: Double, longitude: Double) {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val hotspots = eBirdApiService.getHotspotDetailsCsv(latitude, longitude, apiKey)
+                handleHotspots(hotspots)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
+ */
+
+    private fun handleHotspots(response: Response<ResponseBody>) {
+        if (response.isSuccessful) {
+            val csvContent = response.body()?.string()
+            if (!csvContent.isNullOrEmpty()) {
+                // Parse CSV content here and add hotspots to the map
+                // You might need a CSV parsing library or implement your own parser
+                parseCsvAndAddHotspots(csvContent)
+            } else {
+                Log.e("Error", "Empty or null CSV content")
+            }
+        } else {
+            Log.e("Error", "Failed to get hotspot details. Response code: ${response.code()}")
+        }
+    }
+
+    private fun parseCsvAndAddHotspots(csvContent: String) {
+        // Split the CSV content by lines
+        val rows = csvContent.split("\n")
+
+        for (row in rows) {
+            // Split each row by commas
+            val columns = row.split(",")
+
+            // Check if the row has enough columns
+            if (columns.size >= 8) {
+                // Extract relevant information
+                val latitude = columns[4].toDoubleOrNull()
+                val longitude = columns[5].toDoubleOrNull()
+                val hotspotName = columns[6]
+
+                // Check if latitude and longitude are valid
+                if (latitude != null && longitude != null) {
+                    // Add Mapbox annotation for the hotspot
+                    addHotspotAnnotationToMap(longitude, latitude, hotspotName)
+                } else {
+                    Log.e("Error", "Invalid latitude or longitude in CSV: $row")
+                }
+            } else {
+                Log.e("Error", "Invalid CSV row: $row")
+            }
+        }
+    }
+
+    private fun getHotspotsCsv(latitude: Double, longitude: Double, distance: Int = 50) {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance"
+                val response = eBirdApiService.getHotspotDetailsCsv(url)
+                handleHotspots(response)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun addHotspotAnnotationToMap(longitude: Double, latitude: Double, hotspotName: String) {
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
+        if (bitmap != null) {
+            val annotationApi = mapView.annotations
+            if (annotationApi != null) {
+                val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
+                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                    .withPoint(Point.fromLngLat(longitude, latitude))
+                    .withIconImage(bitmap)
+                    .withIconSize(1.0)
+                    .withTextField(hotspotName)
+                pointAnnotationManager.create(pointAnnotationOptions)
+                Log.d("Debug", "Hotspot annotation created successfully")
+            } else {
+                Log.e("Error", "Annotations API is null")
+            }
+        } else {
+            Log.e("Error", "Bitmap is null")
+        }
+    }
+
+/*
     private fun handleObservations(observations: List<Observations>) {
         Log.d("Debug", "Received observations: $observations")
 
@@ -165,6 +282,8 @@ class HomeFragment : Fragment() {
             }
 
     }
+
+ */
 
     private fun setupGesturesListener() {
         mapView.gestures.addOnMoveListener(onMoveListener)
@@ -243,6 +362,7 @@ class HomeFragment : Fragment() {
     }
      */
 
+    /*
     private fun addAnnotationToMap(longitude: Double, latitude: Double, iconResId: Int, species: String) {
         val bitmap = bitmapFromDrawableRes(requireContext(), iconResId)
         if (bitmap != null) {
@@ -263,6 +383,8 @@ class HomeFragment : Fragment() {
             Log.e("Error", "Bitmap is null")
         }
     }
+
+     */
 
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId)).also {
