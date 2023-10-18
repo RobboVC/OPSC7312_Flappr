@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.core.app.ActivityCompat
@@ -134,7 +135,6 @@ class HomeFragment : Fragment() {
         locationPermissionHelper.checkPermissions { onMapReady() }
 
 
-
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -149,22 +149,14 @@ class HomeFragment : Fragment() {
             requestLocation()
         }
 
-
-        //mapView.invalidate()
-        /*
-        mapView?.getMapboxMap()?.loadStyleUri(
-            Style.MAPBOX_STREETS
-        ) { addAnnotationToMap(37.419974, -122.078053) }
-        */
         return view
     }
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
-        private const val GEOJSON_SOURCE_ID = "line"
-        private const val ZOOM = 14.0
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLocation() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
@@ -176,6 +168,14 @@ class HomeFragment : Fragment() {
                     // Now you can use latitude and longitude as needed
                 }
             }
+    }
+
+    public fun recordUserObservation()
+    {
+        EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
+        addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
+
+        Toast.makeText(requireContext(), "Sighting recorded at current location", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -320,27 +320,6 @@ class HomeFragment : Fragment() {
             )
         }
     }
-
-    /*
-    private fun addAnnotationToMap(longitude: Double, latitude: Double) {
-        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
-        if (bitmap != null) {
-            val annotationApi = mapView.annotations
-            if (annotationApi != null) {
-                val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
-                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(longitude, latitude))
-                    .withIconImage(bitmap)
-                pointAnnotationManager.create(pointAnnotationOptions)
-                Log.d("Debug", "Annotation created successfully")
-            } else {
-                Log.e("Error", "Annotations API is null")
-            }
-        } else {
-            Log.e("Error", "Bitmap is null")
-        }
-    }
-     */
 
     private fun addAnnotationToMap(
         longitude: Double,
