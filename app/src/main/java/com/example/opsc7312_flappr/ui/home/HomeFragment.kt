@@ -203,6 +203,18 @@ class HomeFragment : Fragment() {
             val annotationApi = mapView.annotations
             val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
 
+            EBirdApiServiceKotlin.addItem(-122.077896, 37.418524, "User Observation 1")
+            addAnnotationToMap(-122.077896, 37.418524, R.drawable.pin_blue, "User Observation 1")
+
+            EBirdApiServiceKotlin.addItem(-122.054534, 37.428753, "User Observation 2")
+            addAnnotationToMap(-122.054534, 37.428753, R.drawable.pin_blue, "User Observation 2")
+
+            EBirdApiServiceKotlin.addItem(17.973110, -32.957513, "User Observation 3")
+            addAnnotationToMap(17.973110, -32.957513, R.drawable.pin_blue, "User Observation 3")
+
+            EBirdApiServiceKotlin.addItem(18.529694, -33.824537, "User Observation 4")
+            addAnnotationToMap(18.529694, -33.824537, R.drawable.pin_blue, "User Observation 4")
+
             pointAnnotationManager.addClickListener { annotation ->
                 if (annotation is PointAnnotation) {
                     val latitude = annotation.point.latitude()
@@ -214,6 +226,8 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(), "Marker Clicked - Lat: $latitude, Long: $longitude", Toast.LENGTH_SHORT).show()
 
                     displayMarkerInfo(latitude, longitude)
+
+
                     true // Return true to indicate that the click event has been handled
                 } else {
                     false // Return false if it's not a PointAnnotation
