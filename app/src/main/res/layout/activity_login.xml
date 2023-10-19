@@ -55,13 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@id/emailTitle"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="70dp"
-        android:layout_marginStart="70dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/tb_grey"
+        android:hint="hello@reallygreatsite.com"
+        android:paddingLeft="8dp"
         android:inputType="textEmailAddress"
-        android:hint="   hello@reallygreatsite.com"
+        android:textAlignment="textStart"
         android:textColorHint="@color/text_orange" />
 
     <!-- Password field -->
@@ -81,13 +83,15 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@id/passwordTitle"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="70dp"
-        android:layout_marginStart="70dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/tb_grey"
+        android:hint="****************"
+        android:paddingLeft="8dp"
         android:inputType="textPassword"
-        android:hint="   ****************"
+        android:textAlignment="textStart"
         android:textColorHint="@color/text_orange" />
 
     <com.google.android.material.button.MaterialButton
@@ -112,5 +116,18 @@
         android:textStyle="bold"
         android:onClick="redirectToNavigationDrawer"
         />
+
+
+    <TextView
+        android:id="@+id/tvRedirectToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginStart="270dp"
+        android:layout_marginTop="8dp"
+        android:text="Register"
+        android:textSize="18sp"
+        android:textColor="#FDE4CF"
+        android:clickable="true"/>
 
 </RelativeLayout>

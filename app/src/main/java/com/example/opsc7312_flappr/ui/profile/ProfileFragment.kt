@@ -1,6 +1,7 @@
 package com.example.opsc7312_flappr.ui.profile
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,18 +29,22 @@ class ProfileFragment : Fragment() {
     ): View {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val view = binding.root
 
-        return root
+
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnChangePassword = view.findViewById<Button>(R.id.btnChangePassword)
-        btnChangePassword.setOnClickListener {
+        val tvChangePassword = view.findViewById<TextView>(R.id.tvChangePassword)
+        tvChangePassword.paintFlags = tvChangePassword.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        tvChangePassword.setOnClickListener {
             navigateToChngPass()
         }
+
     }
 
     fun navigateToChngPass() {

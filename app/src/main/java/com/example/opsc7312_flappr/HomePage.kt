@@ -13,25 +13,32 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.example.opsc7312_flappr.databinding.ActivityHomePageBinding
+import com.example.opsc7312_flappr.ui.home.HomeFragment
+
 
 class HomePage : AppCompatActivity() {
+
+
+
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomePageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarHomePage.toolbar)
-
-        binding.appBarHomePage.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_home_page) as NavHostFragment
+        val homeFragment = navHostFragment.childFragmentManager.fragments.firstOrNull { it is HomeFragment } as? HomeFragment
+        //save button here
+        binding.appBarHomePage.fab.setOnClickListener {
+            homeFragment?.recordUserObservation()
         }
+
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_home_page)

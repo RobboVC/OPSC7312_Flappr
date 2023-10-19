@@ -12,7 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/flappr_logo_colour" />
 
     <TextView
@@ -28,24 +28,41 @@
         android:textAlignment="center"
         android:textColor="@color/text_purple" />
 
-    <TextView
-        android:id="@+id/tvSubtitle"
+    <LinearLayout
+        android:id="@+id/llAlreadyRegistered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvRegister"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:text="@string/below_register"
-        android:textSize="18sp"
-        android:textColor="@color/text_pink" />
+        android:layout_marginTop="9dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvSubtitleNonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/non_clickable_text_r"
+            android:textSize="18sp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/text_pink" />
+
+        <TextView
+            android:id="@+id/tvSubtitleClick"
+            android:layout_width="wrap_content"
+            android:layout_height="48sp"
+            android:text="@string/clickable_text_r"
+            android:textSize="18sp"
+            android:textColor="@color/text_pink"
+            android:clickable="true" />
+    </LinearLayout>
 
     <!-- Name field -->
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvSubtitle"
-        android:layout_marginTop="40dp"
+        android:layout_below="@id/llAlreadyRegistered"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="70dp"
         android:text="@string/name"
         android:textSize="22sp"
@@ -63,6 +80,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textEmailAddress"
         android:hint="@string/name_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <!-- Email field -->
@@ -89,6 +107,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textEmailAddress"
         android:hint="@string/email_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <!-- Password field -->
@@ -115,6 +134,7 @@
         android:backgroundTint="@color/tb_grey"
         android:inputType="textPassword"
         android:hint="@string/password_text"
+        android:paddingLeft="8dp"
         android:textColorHint="@color/text_orange" />
 
     <com.google.android.material.button.MaterialButton

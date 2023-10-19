@@ -1,24 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Settings"
+    android:background="@color/background_black">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="24dp"
+        app:iconTint="@color/white"
+        app:backgroundTint="@color/black"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        app:iconPadding="0dp"
+        app:textAllCaps="false"
+        android:text="@string/back"
+        android:contentDescription="@string/back"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_gravity="start"
+        android:elevation="0dp"
+        android:stateListAnimator="@null" />
+
+
+    <com.example.opsc7312_flappr.CircImageView
+        android:id="@+id/ivFlappr"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/flappr_logo_colour" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvSettingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivFlappr"
+        android:layout_marginTop="16dp"
+        android:text="@string/action_settings"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:background="@drawable/dotted_line"
+        android:layout_below="@id/tvSettingsTitle" />
 
     <TextView
-        android:id="@+id/txtSettings"
-        android:layout_width="match_parent"
+        android:id="@+id/tvUnitPreferenceTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvSettingsTitle"
+        android:layout_marginTop="60dp"
+        android:text="@string/unit_pref"
         android:textSize="20sp"
-        android:text="Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Custom Switch with Labels -->
+    <LinearLayout
+        android:id="@+id/switchContainer"
+        android:layout_width="224dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUnitPreferenceTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@string/imperial"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/text_orange"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <Switch
+            android:id="@+id/switchUnits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="12dp"
+            android:textColor="@color/text_orange"
+            android:background="@color/black"
+            android:track="@drawable/switch_rounded_corners"
+            tools:ignore="TouchTargetSizeCheck" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:layout_marginEnd="14dp"
+            android:text="@string/metric"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            android:textColor="@color/text_orange"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvMaxDistanceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/switchContainer"
+        android:layout_marginTop="50dp"
+        android:text="@string/max_dis"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/text_purple" />
+
+    <!-- Maximum Distance Preference -->
+    <SeekBar
+        android:id="@+id/sbMaxDistance"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_below="@id/tvMaxDistanceTitle"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/tb_grey"
+        android:max="50"
+        android:min="1"
+        android:progress="0"
+        android:progressBackgroundTint="@color/tb_grey"
+        android:progressTint="@color/text_orange"
+        android:splitTrack="false"
+        android:thumbTint="@color/text_orange" />
+
+
+    <EditText
+        android:id="@+id/etMaxDistance"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/sbMaxDistance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/tb_grey"
+        android:inputType="number"
+        android:text="@string/default_max_dis"
+        android:textAlignment="center"
+        android:textColor="@color/text_orange"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/tvUnits"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:layout_below="@id/etMaxDistance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/miles"
+        android:textStyle="bold"
+        android:textColor="@color/text_orange"
+        android:textSize="18sp" />
+
+
+    <!-- Save Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveSettings"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvUnits"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        app:cornerRadius="20dp"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+        android:stateListAnimator="@null"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        android:textSize="24dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        />
+</RelativeLayout>
+
