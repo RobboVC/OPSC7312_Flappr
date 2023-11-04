@@ -2,7 +2,7 @@
 class EBirdApiServiceKotlin {
 
     companion object{
-        public var dist = 25
+        public var dist = 5
     }
 
 }

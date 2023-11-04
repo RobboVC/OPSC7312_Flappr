@@ -13,6 +13,7 @@ interface EBirdApiService {
         @Query("lng") longitude: Double,
         @Query("sort") sort: String = "species",
         @Query("dist") distance: Int = EBirdApiServiceKotlin.dist,
+        @Query("Back") back: Int = 5,
         @Header("X-eBirdApiToken") apiKey: String
     ): List<Observations>
 

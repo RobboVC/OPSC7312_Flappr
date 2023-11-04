@@ -1,10 +1,12 @@
 package com.example.opsc7312_flappr.ui.home
 
 import EBirdApiService
+import EBirdApiServiceKotlin
 import okhttp3.ResponseBody
 import Hotspots
 import LocationPermissionHelper
 import Observations
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -38,6 +40,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.annotation.DrawableRes
 import com.example.opsc7312_flappr.BuildConfig
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.gson.GsonBuilder
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.annotations
@@ -71,12 +75,16 @@ class HomeFragment : Fragment() {
 
  */
 
-    private val latitude = -33.9353
-    private val longitude = 18.4083
+    private var latitude = -33.9353
+    private var longitude = 18.4083
+
+    var distance = EBirdApiServiceKotlin.dist
 
     //EBIRD CLOBAL VARIABLES - END
 
     private lateinit var locationPermissionHelper: LocationPermissionHelper
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
         mapView.getMapboxMap().setCamera(CameraOptions.Builder().bearing(it).build())
@@ -113,11 +121,20 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+
         mapView = binding.mapView
 
         locationPermissionHelper = LocationPermissionHelper(WeakReference(requireActivity()))
 
         locationPermissionHelper.checkPermissions { onMapReady() }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+
+
+        requestLocation()
+
+
 
         //mapView.invalidate()
         /*
@@ -126,6 +143,20 @@ class HomeFragment : Fragment() {
         ) { addAnnotationToMap(37.419974, -122.078053) }
         */
         return view
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    // Set latitude and longitude
+                    latitude = location.latitude
+                    longitude = location.longitude
+
+                    // Now you can use latitude and longitude as needed
+                }
+            }
     }
 
     private fun onMapReady() {
@@ -164,7 +195,7 @@ class HomeFragment : Fragment() {
                  */
                 GlobalScope.launch(Dispatchers.Main) {
                     try {
-                        getHotspotsCsv(latitude, longitude, distance = 50)
+                        getHotspotsCsv(latitude, longitude, distance)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -229,10 +260,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getHotspotsCsv(latitude: Double, longitude: Double, distance: Int = 50) {
+    private fun getHotspotsCsv(latitude: Double, longitude: Double, distance: Int) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance"
+                val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance&back=5"
                 val response = eBirdApiService.getHotspotDetailsCsv(url)
                 handleHotspots(response)
             } catch (e: Exception) {
@@ -251,7 +282,7 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0)
-                    .withTextField(hotspotName)
+                    //.withTextField(hotspotName)
                 pointAnnotationManager.create(pointAnnotationOptions)
                 Log.d("Debug", "Hotspot annotation created successfully")
             } else {
