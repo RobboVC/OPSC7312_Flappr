@@ -69,6 +69,7 @@ import retrofit2.Response
 
 
 
+
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -83,6 +84,7 @@ class HomeFragment : Fragment() {
         .build()
 
     private val eBirdApi = retrofit.create(EBirdApiService::class.java)
+    private val eBirdApiService = RestClient.create()
 
     private var latitude = -33.0
     private var longitude = 18.0
@@ -297,7 +299,7 @@ class HomeFragment : Fragment() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance&back=5"
-                val response = EBirdApiService.getHotspotDetailsCsv(url)
+                val response = eBirdApiService.getHotspotDetailsCsv(url)
                 handleHotspots(response)
             } catch (e: Exception) {
                 e.printStackTrace()
