@@ -63,6 +63,10 @@ import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
 import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
+import okhttp3.ResponseBody
+import retrofit2.Response
+
+
 
 
 class HomeFragment : Fragment() {
@@ -82,6 +86,7 @@ class HomeFragment : Fragment() {
 
     private var latitude = -33.0
     private var longitude = 18.0
+    private var distance = EBirdApiServiceKotlin.dist
 
     //EBIRD GLOBAL VARIABLES - END
 
@@ -199,6 +204,15 @@ class HomeFragment : Fragment() {
                     e.printStackTrace()
                 }
             }
+            GlobalScope.launch(Dispatchers.Main) {
+                try {
+                    getHotspotsCsv(latitude, longitude, distance)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+
 
             val annotationApi = mapView.annotations
             val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
@@ -233,6 +247,82 @@ class HomeFragment : Fragment() {
                     false // Return false if it's not a PointAnnotation
                 }
             }
+        }
+    }
+
+    private fun handleHotspots(response: Response<ResponseBody>) {
+        if (response.isSuccessful) {
+            val csvContent = response.body()?.string()
+            if (!csvContent.isNullOrEmpty()) {
+                // Parse CSV content here and add hotspots to the map
+                // You might need a CSV parsing library or implement your own parser
+                parseCsvAndAddHotspots(csvContent)
+            } else {
+                Log.e("Error", "Empty or null CSV content")
+            }
+        } else {
+            Log.e("Error", "Failed to get hotspot details. Response code: ${response.code()}")
+        }
+    }
+
+    private fun parseCsvAndAddHotspots(csvContent: String) {
+        // Split the CSV content by lines
+        val rows = csvContent.split("\n")
+
+        for (row in rows) {
+            // Split each row by commas
+            val columns = row.split(",")
+
+            // Check if the row has enough columns
+            if (columns.size >= 8) {
+                // Extract relevant information
+                val latitude = columns[4].toDoubleOrNull()
+                val longitude = columns[5].toDoubleOrNull()
+                val hotspotName = columns[6]
+
+                // Check if latitude and longitude are valid
+                if (latitude != null && longitude != null) {
+                    // Add Mapbox annotation for the hotspot
+                    addHotspotAnnotationToMap(longitude, latitude, hotspotName)
+                } else {
+                    Log.e("Error", "Invalid latitude or longitude in CSV: $row")
+                }
+            } else {
+                Log.e("Error", "Invalid CSV row: $row")
+            }
+        }
+    }
+
+    private fun getHotspotsCsv(latitude: Double, longitude: Double, distance: Int) {
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance&back=5"
+                val response = EBirdApiService.getHotspotDetailsCsv(url)
+                handleHotspots(response)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun addHotspotAnnotationToMap(longitude: Double, latitude: Double, hotspotName: String) {
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
+        if (bitmap != null) {
+            val annotationApi = mapView.annotations
+            if (annotationApi != null) {
+                val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
+                val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                    .withPoint(Point.fromLngLat(longitude, latitude))
+                    .withIconImage(bitmap)
+                    .withIconSize(1.0)
+                //.withTextField(hotspotName)
+                pointAnnotationManager.create(pointAnnotationOptions)
+                Log.d("Debug", "Hotspot annotation created successfully")
+            } else {
+                Log.e("Error", "Annotations API is null")
+            }
+        } else {
+            Log.e("Error", "Bitmap is null")
         }
     }
 
@@ -350,7 +440,7 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0) // Adjust the size as needed
-                    .withTextField(species)
+                    //.withTextField(species)
                 // Display species as text
                 pointAnnotationManager.create(pointAnnotationOptions)
                 pointAnnotationManager?.addClickListener {
