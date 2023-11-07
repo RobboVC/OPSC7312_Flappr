@@ -77,6 +77,7 @@ class HomeFragment : Fragment() {
     //EBIRD GLOBAL VARIABLES - START
     //API KEY
     private val apiKey = "ql19oi7mpdd1"
+    private val eBirdApiService = RestClient2.create()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.ebird.org")
@@ -84,7 +85,7 @@ class HomeFragment : Fragment() {
         .build()
 
     private val eBirdApi = retrofit.create(EBirdApiService::class.java)
-    private val eBirdApiService = RestClient.create()
+
 
     private var latitude = -33.0
     private var longitude = 18.0
