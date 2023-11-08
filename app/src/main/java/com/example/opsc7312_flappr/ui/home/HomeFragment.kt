@@ -309,7 +309,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun addHotspotAnnotationToMap(longitude: Double, latitude: Double, hotspotName: String) {
-        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_blue)
         if (bitmap != null) {
             val annotationApi = mapView.annotations
             if (annotationApi != null) {
@@ -320,6 +320,14 @@ class HomeFragment : Fragment() {
                     .withIconSize(1.0)
                 //.withTextField(hotspotName)
                 pointAnnotationManager.create(pointAnnotationOptions)
+                pointAnnotationManager?.addClickListener {
+                    Toast.makeText(requireContext(), "Latitude$latitude" + "Longitude$longitude", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), Navigation::class.java)
+                    EBirdApiServiceKotlin.long = longitude
+                    EBirdApiServiceKotlin.lat = latitude
+                    startActivity(intent)
+                    false
+                }
                 Log.d("Debug", "Hotspot annotation created successfully")
             } else {
                 Log.e("Error", "Annotations API is null")
