@@ -66,10 +66,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import okhttp3.ResponseBody
 import retrofit2.Response
 
-
-
-
-
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -220,6 +216,7 @@ class HomeFragment : Fragment() {
             val annotationApi = mapView.annotations
             val pointAnnotationManager = annotationApi.createPointAnnotationManager(mapView)
 
+
             EBirdApiServiceKotlin.addItem(-122.077896, 37.418524, "User Observation 1")
             addAnnotationToMap(-122.077896, 37.418524, R.drawable.pin_blue, "User Observation 1")
 
@@ -300,6 +297,7 @@ class HomeFragment : Fragment() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val url = "https://api.ebird.org/v2/ref/hotspot/geo?lat=$latitude&lng=$longitude&fmt=csv&dist=$distance&back=5"
+                //actual error
                 val response = eBirdApiService.getHotspotDetailsCsv(url)
                 handleHotspots(response)
             } catch (e: Exception) {
@@ -498,7 +496,5 @@ class HomeFragment : Fragment() {
             .setPositiveButton("OK", null)
             .show()
     }
-
-
 
 }
