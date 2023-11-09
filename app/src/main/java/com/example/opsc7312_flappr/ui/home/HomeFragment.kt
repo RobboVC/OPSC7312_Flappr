@@ -57,6 +57,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.core.app.ActivityCompat
 import com.example.opsc7312_flappr.Login
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.mapbox.maps.extension.style.layers.generated.lineLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
@@ -73,6 +75,8 @@ import retrofit2.Response
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+
+    val db = Firebase.firestore
 
     //EBIRD GLOBAL VARIABLES - START
     //API KEY

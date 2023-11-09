@@ -9,17 +9,15 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
+    private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        var givenUsername = findViewById<TextView>(R.id.emailEditText).text
-        var givenPassword = findViewById<TextView>(R.id.etPassword).text
-        val i = getIntent()
-        val username = LoginWorker.username
-        val password = LoginWorker.password
+        firebaseAuth = FirebaseAuth.getInstance()
 
         val tvRedirectToRegister = findViewById<TextView>(R.id.tvRedirectToRegister)
         tvRedirectToRegister.paintFlags = tvRedirectToRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -30,20 +28,12 @@ class Login : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         btnLogin.setOnClickListener(){view ->
-            if(givenUsername.toString().equals(username.toString()) && givenPassword.toString().equals(password.toString())) {
-                redirectToNavigationDrawer(view)
-            }
-            else if(givenUsername.toString().equals("Admin") && givenPassword.toString().equals("Password")) {
-                redirectToNavigationDrawer(view)
-                LoginWorker.FirstName = "Admin"
+            firebaseAuth.signInWithEmailAndPassword(findViewById<TextView>(R.id.emailEditText).text.toString(), findViewById<TextView>(R.id.etPassword).text.toString())
+                .addOnSuccessListener { redirectToNavigationDrawer(view) }
+                .addOnFailureListener(){Toast.makeText(this, it.localizedMessage.toString(), Toast.LENGTH_SHORT).show()}
 
-            }
-            else{
-                Toast.makeText(this, "There is no account with this username and password combination", Toast.LENGTH_LONG)
-                    .show()
-            }
+
         }
-
     }
 
     fun navigateToRegister() {
