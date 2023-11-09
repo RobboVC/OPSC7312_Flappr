@@ -107,6 +107,7 @@ class Navigation : AppCompatActivity() {
 
     var longitude = EBirdApiServiceKotlin.long
     var latitude = EBirdApiServiceKotlin.lat
+    var userLocation: Point = Point.fromLngLat(18.0, -33.0)
 
     private companion object {
         private const val BUTTON_ANIMATION_DURATION = 1500L
@@ -300,7 +301,7 @@ class Navigation : AppCompatActivity() {
         var firstLocationUpdateReceived = false
 
         override fun onNewRawLocation(rawLocation: Location) {
-// not handled
+            userLocation = Point.fromLngLat(rawLocation.longitude, rawLocation.latitude)
         }
 
         override fun onNewLocationMatcherResult(locationMatcherResult: LocationMatcherResult) {
@@ -526,7 +527,7 @@ class Navigation : AppCompatActivity() {
 // load map style
         binding.mapView.getMapboxMap().loadStyleUri(NavigationStyles.NAVIGATION_DAY_STYLE) {
 // add long click listener that search for a route to the clicked destination
-            binding.mapView.gestures.addOnMapLongClickListener { point ->
+            binding.mapView.gestures.addOnMapClickListener { point ->
                 findRoute()
                 true
             }
@@ -592,7 +593,7 @@ class Navigation : AppCompatActivity() {
             listOf(
                 ReplayRouteMapper.mapToUpdateLocation(
                     Date().time.toDouble(),
-                    Point.fromLngLat(-122.39726512303575, 37.785128345296805)
+                    Point.fromLngLat(userLocation.longitude(), userLocation.latitude())
                 )
             )
         )
@@ -605,7 +606,7 @@ class Navigation : AppCompatActivity() {
         val originPoint = originLocation?.let {
             Point.fromLngLat(it.longitude, it.latitude)
         } ?: return
-        var destination = Point.fromLngLat(longitude, latitude)
+        var destination = Point.fromLngLat(EBirdApiServiceKotlin.long, EBirdApiServiceKotlin.lat)
 
 // execute a route request
 // it's recommended to use the
