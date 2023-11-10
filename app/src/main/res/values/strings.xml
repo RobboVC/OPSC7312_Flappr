@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OPSC7312_Flappr</string>
+    <string name="app_name">flappr</string>
     <string name="login">Login</string>
     <string name="below_login">Sign in to continue.</string>
     <string name="email">Email</string>
