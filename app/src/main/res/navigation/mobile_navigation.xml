@@ -22,4 +22,16 @@
         android:name="com.example.opsc7312_flappr.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_tips"
+        android:name="com.example.opsc7312_flappr.ui.tips.TipsFragment"
+        android:label="Tips"
+        tools:layout="@layout/fragment_tips" />
+
+    <fragment
+        android:id="@+id/nav_species"
+        android:name="com.example.opsc7312_flappr.ui.species.SpeciesFragment"
+        android:label="Species"
+        tools:layout="@layout/fragment_species" />
 </navigation>
