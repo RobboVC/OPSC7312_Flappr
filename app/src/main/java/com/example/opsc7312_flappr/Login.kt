@@ -1,5 +1,6 @@
 package com.example.opsc7312_flappr
 
+import EBirdApiServiceKotlin
 import LoginWorker
 import android.content.Intent
 import android.graphics.Paint
@@ -29,7 +30,7 @@ class Login : AppCompatActivity() {
 
         btnLogin.setOnClickListener(){view ->
             firebaseAuth.signInWithEmailAndPassword(findViewById<TextView>(R.id.emailEditText).text.toString(), findViewById<TextView>(R.id.etPassword).text.toString())
-                .addOnSuccessListener { redirectToNavigationDrawer(view) }
+                .addOnSuccessListener { EBirdApiServiceKotlin.userID = firebaseAuth.currentUser!!.uid; redirectToNavigationDrawer(view) }
                 .addOnFailureListener(){Toast.makeText(this, it.localizedMessage.toString(), Toast.LENGTH_SHORT).show()}
 
 
