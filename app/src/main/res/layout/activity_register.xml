@@ -78,10 +78,11 @@
         android:layout_marginStart="70dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/tb_grey"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:hint="@string/name_text"
         android:paddingLeft="8dp"
-        android:textColorHint="@color/text_orange" />
+        android:textColorHint="@color/text_orange"
+        android:importantForAutofill="yes"/>
 
     <!-- Email field -->
     <TextView
@@ -93,7 +94,8 @@
         android:layout_marginStart="70dp"
         android:text="@string/email"
         android:textSize="22sp"
-        android:textColor="@color/text_orange" />
+        android:textColor="@color/text_orange"
+        />
 
     <EditText
         android:id="@+id/emailEditText"
@@ -108,7 +110,7 @@
         android:inputType="textEmailAddress"
         android:hint="@string/email_text"
         android:paddingLeft="8dp"
-        android:textColorHint="@color/text_orange" />
+            />
 
     <!-- Password field -->
     <TextView

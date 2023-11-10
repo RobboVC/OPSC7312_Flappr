@@ -8,7 +8,7 @@
     <string name="register">Create New Account</string>
     <string name="non_clickable_text_r">Already Registered?</string>
     <string name="clickable_text_r">Log in here.</string>
-    <string name="register_button">Sign in</string>
+    <string name="register_button">Sign up</string>
     <string name="name">Name</string>
     <string name="name_text">Adam van Staden</string>
     <string name="email_text">hello@reallygreatsite.com</string>
