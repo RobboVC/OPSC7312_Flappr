@@ -49,6 +49,8 @@ class Register : AppCompatActivity() {
             if(username.isNullOrEmpty() or password.isNullOrEmpty() or name.isNullOrEmpty()){
                 allFilled = false
             }
+
+
             if(allFilled && isValidEmail(username.toString())){
                 registerNewUser(name.toString(), username.toString(), password.toString())
             }
@@ -77,7 +79,9 @@ class Register : AppCompatActivity() {
                             "maxDistance" to 5
                         )
                         db.collection("userSettings").document(userInfo)
-                            .set(userSettings, SetOptions.merge()).addOnSuccessListener {Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
+                            .set(userSettings, SetOptions.merge()).addOnSuccessListener {runOnUiThread {
+                                Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
+                            }
                                 }
                             .addOnFailureListener{Toast.makeText(this, "Failed to register user's settings", Toast.LENGTH_SHORT).show()}
                     }

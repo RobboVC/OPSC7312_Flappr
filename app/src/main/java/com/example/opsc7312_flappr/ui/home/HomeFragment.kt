@@ -57,6 +57,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.core.app.ActivityCompat
 import com.example.opsc7312_flappr.Login
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mapbox.maps.extension.style.layers.generated.lineLayer
@@ -182,15 +184,51 @@ class HomeFragment : Fragment() {
             }
     }
 
+    fun addAnnotationsForUserId(userId: String) {
+
+        val db = FirebaseFirestore.getInstance()
+
+        // Reference to the userSightings collection
+        val collectionRef = db.collection("userSightings")
+
+        // Query to get documents with the specified userId
+        val query = collectionRef.whereEqualTo("userId", userId)
+
+        // Execute the query
+        query.get().addOnCompleteListener{
+            if (it.isSuccessful) {
+                val querySnapshot: QuerySnapshot? = it.result
+
+                // Iterate through the documents and add annotations to the map
+                querySnapshot?.documents?.forEach { document ->
+                    val latitude = document.getDouble("latitude")
+                    val longitude = document.getDouble("longitude")
+                    // Check if latitude and longitude are not null
+                    if (latitude != null && longitude != null) {
+                        // Add annotation to the map
+                        addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
+                        EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
+                    }
+                }
+            } else {
+                // Handle errors
+            }
+        }
+        }
+
     public fun recordUserObservation()
     {
+        val data = hashMapOf(
+            "longitude" to longitude,
+            "latitude" to latitude,
+            "userId" to EBirdApiServiceKotlin.userID
+        )
+        db.collection("userSightings").add(data)
         EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
         addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
 
         Toast.makeText(requireContext(), "Sighting recorded at current location", Toast.LENGTH_SHORT).show()
     }
-
-
     private fun onMapReady() {
         mapView.getMapboxMap().setCamera(
             CameraOptions.Builder()
@@ -207,6 +245,7 @@ class HomeFragment : Fragment() {
                 try {
                     val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey = apiKey)
                     handleObservations(observations)
+                    addAnnotationsForUserId(EBirdApiServiceKotlin.userID)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
