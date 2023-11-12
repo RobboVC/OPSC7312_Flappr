@@ -178,8 +178,6 @@ class HomeFragment : Fragment() {
                     // Set latitude and longitude
                     latitude = location.latitude
                     longitude = location.longitude
-
-                    // Now you can use latitude and longitude as needed
                 }
             }
     }
@@ -206,18 +204,17 @@ class HomeFragment : Fragment() {
                     // Check if latitude and longitude are not null
                     if (latitude != null && longitude != null) {
                         // Add annotation to the map
-                        addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
+                        addAnnotationToMap(longitude, latitude, R.drawable.pin_purple, "User Observation")
                         EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
                     }
                 }
-            } else {
-                // Handle errors
             }
         }
         }
 
     public fun recordUserObservation()
     {
+        requestLocation()
         val data = hashMapOf(
             "longitude" to longitude,
             "latitude" to latitude,
@@ -225,7 +222,7 @@ class HomeFragment : Fragment() {
         )
         db.collection("userSightings").add(data)
         EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
-        addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
+        addAnnotationToMap(longitude, latitude, R.drawable.pin_purple, "User Observation")
 
         Toast.makeText(requireContext(), "Sighting recorded at current location", Toast.LENGTH_SHORT).show()
     }
@@ -352,7 +349,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun addHotspotAnnotationToMap(longitude: Double, latitude: Double, hotspotName: String) {
-        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_blue)
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_green)
         if (bitmap != null) {
             val annotationApi = mapView.annotations
             if (annotationApi != null) {
@@ -361,7 +358,7 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0)
-                //.withTextField(hotspotName)
+                .withTextField(hotspotName)
                 pointAnnotationManager.create(pointAnnotationOptions)
                 pointAnnotationManager?.addClickListener {
                     Toast.makeText(requireContext(), "Latitude$latitude" + "Longitude$longitude", Toast.LENGTH_SHORT).show()
@@ -494,7 +491,7 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0) // Adjust the size as needed
-                    //.withTextField(species)
+                    .withTextField(species)
                 // Display species as text
                 pointAnnotationManager.create(pointAnnotationOptions)
                 pointAnnotationManager?.addClickListener {
