@@ -39,7 +39,10 @@ class TipsFragment : Fragment() {
 
         // Set a custom indicator color (replace R.color.your_custom_color)
         val indicator = resources.getDrawable(android.R.drawable.ic_menu_more).mutate()
-        indicator.setColorFilter(ContextCompat.getColor(requireContext(), R.color.text_purple), PorterDuff.Mode.SRC_IN)
+        indicator.setColorFilter(
+            ContextCompat.getColor(requireContext(), R.color.text_purple),
+            PorterDuff.Mode.SRC_IN
+        )
         expandableListViewExample.setGroupIndicator(indicator)
 
         // Create and set the adapter
@@ -50,33 +53,6 @@ class TipsFragment : Fragment() {
         )
         expandableListViewExample.setAdapter(expandableListAdapter)
 
-        // Set listeners for group expand, group collapse, and child click
-        expandableListViewExample.setOnGroupExpandListener { groupPosition ->
-            Toast.makeText(
-                requireContext(),
-                "${expandableTitleList[groupPosition]} List Expanded.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        expandableListViewExample.setOnGroupCollapseListener { groupPosition ->
-            Toast.makeText(
-                requireContext(),
-                "${expandableTitleList[groupPosition]} List Collapsed.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        expandableListViewExample.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-            Toast.makeText(
-                requireContext(),
-                "${expandableTitleList[groupPosition]} -> ${
-                    expandableDetailList[expandableTitleList[groupPosition]]!![childPosition]
-                }",
-                Toast.LENGTH_SHORT
-            ).show()
-            false
-        }
 
         return root
     }
