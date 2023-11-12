@@ -6,8 +6,10 @@ class EBirdApiServiceKotlin {
         public var long = 18.0
         public var lat = -33.0
 
+        public var startLong = 18.0
+        public var startLat = -33.0
         public var userID = ""
-
+      
         public var listOfUserObservations = mutableListOf<UserObservation>()
 
         fun addItem(longitude: Double, latitude: Double, name: String) {
