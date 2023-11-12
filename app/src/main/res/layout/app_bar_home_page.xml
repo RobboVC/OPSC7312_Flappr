@@ -30,7 +30,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/text_purple"
-        app:srcCompat="@drawable/save_icon"
-        android:contentDescription="send email"/>
+        app:srcCompat="@drawable/add_location_icon"
+        android:contentDescription="record observations"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

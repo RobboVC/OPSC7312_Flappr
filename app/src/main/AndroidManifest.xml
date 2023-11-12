@@ -12,7 +12,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/title_home"
+        android:label="flappr"
         android:supportsRtl="true"
         android:theme="@style/Theme.OPSC7312_Flappr"
         tools:targetApi="31">
@@ -35,7 +35,8 @@
             android:theme="@style/Theme.OPSC7312_Flappr" />
         <activity
             android:name=".Login"
-            android:exported="true">
+            android:exported="true"
+            android:icon="@drawable/flappr_logo_colour">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
