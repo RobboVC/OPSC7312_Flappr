@@ -107,7 +107,7 @@ class Navigation : AppCompatActivity() {
 
     var longitude = EBirdApiServiceKotlin.long
     var latitude = EBirdApiServiceKotlin.lat
-    var userLocation: Point = Point.fromLngLat(18.0, -33.0)
+    var userLocation: Point = Point.fromLngLat(18.468728951430112, -33.97242510168518)
 
     private companion object {
         private const val BUTTON_ANIMATION_DURATION = 1500L
