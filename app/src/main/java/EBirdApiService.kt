@@ -1,9 +1,16 @@
+
 import com.example.opsc7312_flappr.NotableObservations
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import okhttp3.ResponseBody
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface EBirdApiService {
     @GET("/v2/data/obs/geo/recent")
@@ -13,6 +20,7 @@ interface EBirdApiService {
         @Query("lng") longitude: Double,
         @Query("sort") sort: String = "species",
         @Query("dist") distance: Int = EBirdApiServiceKotlin.dist,
+        @Query("back") back: Int = 14,
         @Header("X-eBirdApiToken") apiKey: String
     ): List<Observations>
 
@@ -28,8 +36,5 @@ interface EBirdApiService {
         @Query("dist") distance: Int = EBirdApiServiceKotlin.dist,
         @Header("X-eBirdApiToken") apiKey: String
     ): List<NotableObservations>
-
-    @GET
-    suspend fun getNotableDetailsCsv(@Url url: String): Response<ResponseBody>
-
 }
+

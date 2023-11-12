@@ -57,6 +57,10 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.core.app.ActivityCompat
 import com.example.opsc7312_flappr.Login
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.mapbox.maps.extension.style.layers.generated.lineLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
@@ -69,6 +73,8 @@ import retrofit2.Response
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+
+    val db = Firebase.firestore
 
     //EBIRD GLOBAL VARIABLES - START
     //API KEY
@@ -176,15 +182,50 @@ class HomeFragment : Fragment() {
             }
     }
 
+    fun addAnnotationsForUserId(userId: String) {
+
+        val db = FirebaseFirestore.getInstance()
+
+        // Reference to the userSightings collection
+        val collectionRef = db.collection("userSightings")
+
+        // Query to get documents with the specified userId
+        val query = collectionRef.whereEqualTo("userId", userId)
+
+        // Execute the query
+        query.get().addOnCompleteListener{
+            if (it.isSuccessful) {
+                val querySnapshot: QuerySnapshot? = it.result
+
+                // Iterate through the documents and add annotations to the map
+                querySnapshot?.documents?.forEach { document ->
+                    val latitude = document.getDouble("latitude")
+                    val longitude = document.getDouble("longitude")
+                    // Check if latitude and longitude are not null
+                    if (latitude != null && longitude != null) {
+                        // Add annotation to the map
+                        addAnnotationToMap(longitude, latitude, R.drawable.pin_purple, "User Observation")
+                        EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
+                    }
+                }
+            }
+        }
+        }
+
     public fun recordUserObservation()
     {
+        requestLocation()
+        val data = hashMapOf(
+            "longitude" to longitude,
+            "latitude" to latitude,
+            "userId" to EBirdApiServiceKotlin.userID
+        )
+        db.collection("userSightings").add(data)
         EBirdApiServiceKotlin.addItem(longitude, latitude, "User Observation")
-        addAnnotationToMap(longitude, latitude, R.drawable.pin_blue, "User Observation")
+        addAnnotationToMap(longitude, latitude, R.drawable.pin_purple, "User Observation")
 
         Toast.makeText(requireContext(), "Sighting recorded at current location", Toast.LENGTH_SHORT).show()
     }
-
-
     private fun onMapReady() {
         mapView.getMapboxMap().setCamera(
             CameraOptions.Builder()
@@ -201,6 +242,7 @@ class HomeFragment : Fragment() {
                 try {
                     val observations = eBirdApi.getRecentObservations(latitude, longitude, apiKey = apiKey)
                     handleObservations(observations)
+                    addAnnotationsForUserId(EBirdApiServiceKotlin.userID)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -309,7 +351,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun addHotspotAnnotationToMap(longitude: Double, latitude: Double, hotspotName: String) {
-        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_red)
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.pin_green)
         if (bitmap != null) {
             val annotationApi = mapView.annotations
             if (annotationApi != null) {
@@ -318,8 +360,16 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0)
-                //.withTextField(hotspotName)
+                .withTextField(hotspotName)
                 pointAnnotationManager.create(pointAnnotationOptions)
+                pointAnnotationManager?.addClickListener {
+                    Toast.makeText(requireContext(), "Latitude$latitude" + "Longitude$longitude", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), Navigation::class.java)
+                    EBirdApiServiceKotlin.long = longitude
+                    EBirdApiServiceKotlin.lat = latitude
+                    startActivity(intent)
+                    false
+                }
                 Log.d("Debug", "Hotspot annotation created successfully")
             } else {
                 Log.e("Error", "Annotations API is null")
@@ -443,7 +493,7 @@ class HomeFragment : Fragment() {
                     .withPoint(Point.fromLngLat(longitude, latitude))
                     .withIconImage(bitmap)
                     .withIconSize(1.0) // Adjust the size as needed
-                    //.withTextField(species)
+                    .withTextField(species)
                 // Display species as text
                 pointAnnotationManager.create(pointAnnotationOptions)
                 pointAnnotationManager?.addClickListener {
