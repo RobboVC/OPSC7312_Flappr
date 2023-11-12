@@ -12,10 +12,7 @@
             android:id="@+id/nav_sightings"
             android:icon="@drawable/sightings_icon"
             android:title="@string/menu_sightings" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/profile_icon"
-            android:title="@string/menu_profile" />
+
         <item
             android:id="@+id/nav_tips"
             android:icon="@drawable/tips_icon"
