@@ -20,9 +20,6 @@ import com.example.opsc7312_flappr.ui.home.HomeFragment
 
 class HomePage : AppCompatActivity() {
 
-
-
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomePageBinding
 
@@ -30,7 +27,15 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.appBarHomePage.toolbar)
+
+
+        //If the app needs to run on emulator un comment the line below
+
+        //setSupportActionBar(binding.appBarHomePage.toolbar)
+
+
+
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_home_page) as NavHostFragment
         val homeFragment = navHostFragment.childFragmentManager.fragments.firstOrNull { it is HomeFragment } as? HomeFragment
         //save button here
@@ -46,7 +51,7 @@ class HomePage : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_sightings, R.id.nav_profile
+                R.id.nav_home, R.id.nav_sightings,R.id.nav_tips, R.id.nav_species
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
