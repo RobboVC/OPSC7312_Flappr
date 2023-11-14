@@ -1,7 +1,6 @@
 package com.example.opsc7312_flappr
 
 import EBirdApiServiceKotlin
-import LoginWorker
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle

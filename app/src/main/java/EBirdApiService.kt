@@ -2,8 +2,6 @@
 import com.example.opsc7312_flappr.NotableObservations
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
