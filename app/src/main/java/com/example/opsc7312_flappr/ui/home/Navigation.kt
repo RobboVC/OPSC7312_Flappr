@@ -107,7 +107,7 @@ class Navigation : AppCompatActivity() {
 
     var longitude = EBirdApiServiceKotlin.long
     var latitude = EBirdApiServiceKotlin.lat
-    var userLocation: Point = Point.fromLngLat(18.468728951430112, -33.97242510168518)
+    var userLocation: Point = Point.fromLngLat(EBirdApiServiceKotlin.startLong, EBirdApiServiceKotlin.startLat)
 
     private companion object {
         private const val BUTTON_ANIMATION_DURATION = 1500L
@@ -529,8 +529,10 @@ class Navigation : AppCompatActivity() {
 // add long click listener that search for a route to the clicked destination
             binding.mapView.gestures.addOnMapClickListener { point ->
                 findRoute()
+
                 true
             }
+            findRoute()
         }
 
 // initialize view interactions
