@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912206580428",
+    "project_id": "opsc-flappr",
+    "storage_bucket": "opsc-flappr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912206580428:android:959cc44841c9205bf8d069",
+        "android_client_info": {
+          "package_name": "com.example.opsc7312_flappr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW_k8FLjil303jxqJTj1XbDjt_uGSzHL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

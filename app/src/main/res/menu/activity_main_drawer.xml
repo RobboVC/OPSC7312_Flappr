@@ -12,9 +12,14 @@
             android:id="@+id/nav_sightings"
             android:icon="@drawable/sightings_icon"
             android:title="@string/menu_sightings" />
+
         <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/profile_icon"
-            android:title="@string/menu_profile" />
+            android:id="@+id/nav_tips"
+            android:icon="@drawable/tips_icon"
+            android:title="Tips" />
+        <item
+            android:id="@+id/nav_species"
+            android:icon="@drawable/species_icon"
+            android:title="Species Overview" />
     </group>
 </menu>
